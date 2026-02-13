@@ -11,7 +11,6 @@ An interactive 3D particle experience controlled by your hand gestures via webca
 | ✊ Fist | Particles cluster and follow your hand |
 | 🖐️ Open Palm | Particles explode outward |
 | ✊ Fist again | Explosion reverses (implode) |
-| 🤟 I Love You | Particles form "I LOVE YOU" text |
 
 ## Tech Stack
 
@@ -29,7 +28,7 @@ An interactive 3D particle experience controlled by your hand gestures via webca
    git add .
    git commit -m "Initial commit"
    git branch -M main
-   git remote add origin https://github.com/YOUR_USERNAME/hand-universe.git
+   git remote add origin https://github.com/iamKushGupta/hand-universe.git
    git push -u origin main
    ```
 3. Go to **Settings → Pages → Source → Deploy from branch → `main`**
