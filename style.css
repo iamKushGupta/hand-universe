@@ -1,0 +1,376 @@
+/* ===== CSS Variables ===== */
+:root {
+    --bg: #05060f;
+    --text: #e0e4f0;
+    --text-dim: #6b7094;
+    --accent: #6c63ff;
+    --accent-glow: rgba(108, 99, 255, 0.4);
+    --explode-color: #ffb347;
+    --ilu-color: #ff6b9d;
+    --surface: rgba(15, 17, 30, 0.85);
+    --surface-border: rgba(108, 99, 255, 0.15);
+    --radius: 16px;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ===== Reset ===== */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    font-family: var(--font);
+    color: var(--text);
+    cursor: default;
+}
+
+/* ===== Three.js Canvas ===== */
+#canvas-container {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+}
+
+#canvas-container canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ===== Webcam Preview (small corner view) ===== */
+#webcam-preview {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 180px;
+    height: 135px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    z-index: 100;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+#webcam-preview.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#webcam-canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+}
+
+#webcam-label {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* ===== Gesture HUD ===== */
+#gesture-hud {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 24px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: 50px;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+#gesture-hud.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+#gesture-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+#gesture-label {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-dim);
+    letter-spacing: 0.3px;
+}
+
+/* ===== State Indicator ===== */
+#state-indicator {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: 50px;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+#state-indicator.visible {
+    opacity: 1;
+}
+
+#state-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+#state-text {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+}
+
+@keyframes pulse-dot {
+
+    0%,
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 4px var(--accent-glow);
+    }
+
+    50% {
+        opacity: 0.5;
+        box-shadow: 0 0 12px var(--accent-glow);
+    }
+}
+
+/* ===== Instructions Overlay ===== */
+#instructions {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 6, 15, 0.92);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+#instructions.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.instructions-content {
+    text-align: center;
+    max-width: 480px;
+    padding: 48px 40px;
+    background: linear-gradient(135deg, rgba(20, 22, 40, 0.9), rgba(30, 32, 55, 0.9));
+    border: 1px solid var(--surface-border);
+    border-radius: 24px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), 0 0 120px var(--accent-glow);
+    animation: float-in 0.8s ease-out;
+}
+
+@keyframes float-in {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.instructions-content h1 {
+    font-size: 36px;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--accent), var(--ilu-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 8px;
+}
+
+.tagline {
+    font-size: 15px;
+    color: var(--text-dim);
+    margin-bottom: 36px;
+}
+
+.gesture-guide {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 36px;
+}
+
+.gesture-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    transition: background 0.3s ease;
+}
+
+.gesture-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.gesture-emoji {
+    font-size: 28px;
+    width: 40px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.gesture-desc {
+    font-size: 14px;
+    color: var(--text);
+    text-align: left;
+}
+
+#start-btn {
+    display: inline-block;
+    padding: 14px 40px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: var(--font);
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 24px var(--accent-glow);
+}
+
+#start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px var(--accent-glow);
+}
+
+#start-btn:active {
+    transform: translateY(0);
+}
+
+.note {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 20px;
+    opacity: 0.6;
+}
+
+/* ===== State color overrides ===== */
+body.state-follow #state-dot {
+    background: var(--accent);
+}
+
+body.state-explode #state-dot {
+    background: var(--explode-color);
+    animation-name: pulse-dot-warm;
+}
+
+body.state-implode #state-dot {
+    background: var(--accent);
+}
+
+body.state-text-form #state-dot {
+    background: var(--ilu-color);
+    animation-name: pulse-dot-pink;
+}
+
+@keyframes pulse-dot-warm {
+
+    0%,
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 4px rgba(255, 179, 71, 0.4);
+    }
+
+    50% {
+        opacity: 0.5;
+        box-shadow: 0 0 12px rgba(255, 179, 71, 0.4);
+    }
+}
+
+@keyframes pulse-dot-pink {
+
+    0%,
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 4px rgba(255, 107, 157, 0.4);
+    }
+
+    50% {
+        opacity: 0.5;
+        box-shadow: 0 0 12px rgba(255, 107, 157, 0.4);
+    }
+}
+
+/* ===== Loading indicator ===== */
+#start-btn.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+#start-btn.loading::after {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

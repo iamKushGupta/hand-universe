@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day — Interactive 3D Particle Experience</title>
+    <meta name="description"
+        content="An interactive 3D particle experience controlled by your hand gestures via webcam. Built with Three.js and MediaPipe Hands.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Hidden video element for webcam -->
+    <video id="webcam" autoplay playsinline style="display:none;"></video>
+
+    <!-- Three.js canvas will be inserted here -->
+    <div id="canvas-container"></div>
+
+    <!-- Webcam preview (small corner) -->
+    <div id="webcam-preview">
+        <canvas id="webcam-canvas"></canvas>
+        <div id="webcam-label">CAMERA</div>
+    </div>
+
+    <!-- Gesture status HUD -->
+    <div id="gesture-hud">
+        <div id="gesture-icon">✊</div>
+        <div id="gesture-label">Waiting for hand...</div>
+    </div>
+
+    <!-- State indicator -->
+    <div id="state-indicator">
+        <div id="state-dot"></div>
+        <span id="state-text">IDLE</span>
+    </div>
+
+    <!-- Instructions overlay -->
+    <div id="instructions">
+        <div class="instructions-content">
+            <h1>Happy Valentine's Day</h1>
+            <p class="tagline">A small surprise for you</p>
+            <div class="gesture-guide">
+                <div class="gesture-item">
+                    <span class="gesture-emoji">✊</span>
+                    <span class="gesture-desc">Fist — Move the particles</span>
+                </div>
+                <div class="gesture-item">
+                    <span class="gesture-emoji">🖐️</span>
+                    <span class="gesture-desc">Open Palm — something cool?</span>
+                </div>
+                <div class="gesture-item">
+                    <span class="gesture-emoji">✊</span>
+                    <span class="gesture-desc">Fist again — something cool again?</span>
+                </div>
+                <div class="gesture-item">
+                    <span class="gesture-emoji">🤟</span>
+                    <span class="gesture-desc">And finally, my surprise</span>
+                </div>
+            </div>
+            <button id="start-btn">Enable Camera &amp; Start</button>
+            <p class="note">Your webcam feed stays on your device — nothing is sent anywhere.</p>
+        </div>
+    </div>
+
+    <!-- CDN imports -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/hands.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675466862/camera_utils.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="main.js" defer></script>
+</body>
+
+</html>
